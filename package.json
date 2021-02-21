@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-dsv",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Import .tsv and .csv files as ES6 modules using esbuild",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

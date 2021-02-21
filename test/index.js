@@ -1,4 +1,4 @@
-const { yamlPlugin } = require("../dist"),
+const { dsvPlugin } = require("../dist"),
   { assert } = require("chai"),
   { build } = require("esbuild");
 
@@ -18,6 +18,6 @@ function test(test, options) {
     entryPoints: [`tests/basic.ts`],
     bundle: true,
     outfile: `dist/${test}.js`,
-    plugins: [yamlPlugin(options)]
+    plugins: [dsvPlugin(options)]
   }).catch(() => process.exit(1));
 }

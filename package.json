@@ -13,7 +13,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node build.js && tsc --emitDeclarationOnly",
+    "build": "node build.js",
     "test": "yarn build && cd test && mocha 'index.js' --no-timeout --exit",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check ."
@@ -25,9 +25,14 @@
     "dist",
     "src/dsv.d.ts"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "d3-dsv": "^2.0.0",
+    "fs-extra": "^9.1.0",
+    "tosource": "^2.0.0-alpha.2"
+  },
   "devDependencies": {
     "@types/chai": "^4.2.15",
+    "@types/d3-dsv": "^2.0.1",
     "@types/fs-extra": "^9.0.7",
     "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.31",

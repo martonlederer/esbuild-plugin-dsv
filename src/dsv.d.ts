@@ -1,10 +1,16 @@
 // dsv-supported file extension declarations
 declare module "*.csv" {
-  const content: Record<string | number, string>[];
+  const content: {
+    [key: string]: string;
+    [key: number]: string;
+  }[];
   export default content;
 }
 
 declare module "*.tsv" {
-  const content: Record<string | number, string>[];
+  const content: {
+    [key: string]: string;
+    [key: number]: string;
+  }[];
   export default content;
 }

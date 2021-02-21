@@ -1,11 +1,15 @@
 import { Plugin } from "esbuild";
 import { TextDecoder } from "util";
 import path from "path";
-import { csvParse, tsvParse } from "d3-dsv";
+import { csvParse, tsvParse, DSVRowArray } from "d3-dsv";
 import fs from "fs-extra";
 import tosource from "tosource";
 
-export const dsvPlugin = (): Plugin => ({
+interface DsvPluginOptions {
+  transform?: (data: DSVRowArray[]) => DSVRowArray[] | undefined;
+}
+
+export const dsvPlugin = (options: DsvPluginOptions): Plugin => ({
   name: "dsv",
   setup(build) {
     build.onResolve({ filter: /\.(csv|tsv)$/ }, (args) => {
@@ -23,11 +27,14 @@ export const dsvPlugin = (): Plugin => ({
           await fs.readFile(args.path)
         ),
         extension = path.extname(args.path),
-        parser = { ".csv": csvParse, ".tsv": tsvParse },
-        parsedContent = parser[extension](fileContent);
+        parser = { ".csv": csvParse, ".tsv": tsvParse };
+      let parsedContent = parser[extension](fileContent);
+
+      if (options?.transform && options.transform(parsedContent) !== undefined)
+        parsedContent = options.transform(parsedContent);
 
       return {
-        contents: `export default ${tosource(parsedContent)}`
+        contents: `export default ${tosource(parsedContent)};`
       };
     });
   }

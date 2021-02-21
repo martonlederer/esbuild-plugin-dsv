@@ -6,7 +6,10 @@ import fs from "fs-extra";
 import tosource from "tosource";
 
 interface DsvPluginOptions {
-  transform?: (data: DSVRowArray[]) => DSVRowArray[] | undefined;
+  transform?: (
+    data: DSVRowArray,
+    type: "CSV" | "TSV"
+  ) => DSVRowArray | undefined;
 }
 
 export const dsvPlugin = (options: DsvPluginOptions): Plugin => ({
@@ -27,11 +30,16 @@ export const dsvPlugin = (options: DsvPluginOptions): Plugin => ({
           await fs.readFile(args.path)
         ),
         extension = path.extname(args.path),
-        parser = { ".csv": csvParse, ".tsv": tsvParse };
+        parser = { ".csv": csvParse, ".tsv": tsvParse },
+        type = extension === ".csv" ? "CSV" : "TSV";
+
       let parsedContent = parser[extension](fileContent);
 
-      if (options?.transform && options.transform(parsedContent) !== undefined)
-        parsedContent = options.transform(parsedContent);
+      if (
+        options?.transform &&
+        options.transform(parsedContent, type) !== undefined
+      )
+        parsedContent = options.transform(parsedContent, type);
 
       return {
         contents: `export default ${tosource(parsedContent)};`

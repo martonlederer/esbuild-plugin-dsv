@@ -17,10 +17,10 @@ export const dsvPlugin = (options: DsvPluginOptions): Plugin => ({
   setup(build) {
     build.onResolve({ filter: /\.(csv|tsv)$/ }, (args) => {
       if (args.resolveDir === "") return;
-      
+
       const filePath = path.isAbsolute(args.path)
-          ? args.path
-          : path.join(args.resolveDir, args.path);
+        ? args.path
+        : path.join(args.resolveDir, args.path);
       return {
         path: filePath,
         watchFiles: [filePath],
